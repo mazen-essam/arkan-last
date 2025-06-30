@@ -14,6 +14,7 @@ export const fetchProperties = createAsyncThunk(
           'apiKey': '1234'
         }
       });
+      console.log("Fetched properties in slice:", response.data.data);
       return response.data.data;
     } catch (error) {
       // Log detailed error information
@@ -91,7 +92,7 @@ const propertySlice = createSlice({
           amenities: property.amenities ? property.amenities.split(',') : [],
           area: `${property.land_space || 0} sqft`,
           status: property.status || 'available',
-          image: property.image || '/default-property.jpg'
+          images: property.images 
         }));
       })
       .addCase(fetchProperties.rejected, (state, action) => {

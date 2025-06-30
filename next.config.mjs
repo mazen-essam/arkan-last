@@ -11,6 +11,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "prod-images.cooingestate.com",
       },
+      {
+        protocol: "https",
+        hostname: "static.vecteezy.com", // ✅ added vecteezy domain
+      },
+      {
+        protocol: "https",
+        hostname:"realestate.learnock.com"
+      }
     ],
   },
   webpack: (config) => {

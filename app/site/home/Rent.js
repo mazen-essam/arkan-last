@@ -12,6 +12,7 @@ const DynamicSlider = dynamic(() => import("react-slick"), {
   ssr: false,
   loading: () => <div className="slick-loading">Loading...</div>,
 });
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Rent({ classes = "", moreSetting = {}, header }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -26,6 +27,7 @@ export default function Rent({ classes = "", moreSetting = {}, header }) {
     dispatch(fetchProperties());
     Aos.init({ duration: 700, once: true });
   }, [dispatch]);
+    console.log("Fetched properties in Rent component:", properties);
 
   const settings = {
     dots: true,
@@ -111,13 +113,19 @@ export default function Rent({ classes = "", moreSetting = {}, header }) {
 
       {parsedProperties.length > 0 ? (
         <DynamicSlider {...settings}>
-          {parsedProperties.map((property) => (
+          {parsedProperties.map((property) => {
+           const firstImage =
+    property.images && property.images.length > 0
+      ? `${API_URL}/storage${property.images[0].image_path}`
+      : "/placeholder.jpg"; // fallback image
+
+          return(
             <div key={property.id} className="px-2">
               <Link href={`/site/ApartmentDetails/${property.id}`} passHref>
                 <RentCard
                   property={{
                     id: property.id,
-                    image: property.image || "/default-property.jpg",
+                    image: firstImage, 
                     title: property.title || "Untitled Property",
                     price: property.price || 0,
                     price_unit: property.price_unit || "USD",
@@ -130,7 +138,7 @@ export default function Rent({ classes = "", moreSetting = {}, header }) {
                 />
               </Link>
             </div>
-          ))}
+          )})}
         </DynamicSlider>
       ) : (
         <div className="text-center py-8">No properties available at the moment</div>

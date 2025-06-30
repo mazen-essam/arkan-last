@@ -7,7 +7,7 @@ export default function RentCard({property}) {
     return (
         <div className="bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-200  ">
                     <div style={{ position: 'relative', width: '100%', height: '400px' }}>
-                        <Image src="/img2.jpg" alt={property.title} layout="fill" objectFit="cover" />
+                        <Image src={property.image} alt={property.title} layout="fill" objectFit="cover" />
                         <FavouriteButton property={property} />
                     </div>
                     <div className="p-5">

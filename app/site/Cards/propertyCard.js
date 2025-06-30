@@ -14,17 +14,20 @@ import React from 'react';
     bathrooms,
     furnished,
     amenities,
+    image,
   }) => {
+    console.log(image);
     return (
       <div className="xl:w-3/4 w-full mx-auto mt-10 mb-12 rounded-lg overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300">
         {/* Static Image with Lazy Loading */}
        <div className='w-full h-48 relative'>
         <Image
-          src="/background3.jpg"
+          src={image } // Fallback image if none provided
           alt="Property"
           // className=" object-cover"
           loading="lazy"
           layout='fill'
+          unoptimized 
         />
         </div>
         <div className='p-6 '>       {/* Title and Price */}

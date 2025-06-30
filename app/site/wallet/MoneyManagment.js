@@ -1,177 +1,171 @@
 import Image from "next/image";
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchInvestments } from "../../store/investmentsSlice";
+import { fetchUserProfile } from "../../store/profileSlice";
+import { useDispatch } from "react-redux";
+import { format } from 'date-fns';
 
 function MoneyManagement() {
-  // Sample data for transactions
-  const transactions = [
-    {
-      id: 1,
-      date: "2023-10-01",
-      amount: "EGP 500",
-      status: "Succeeded",
-      type: "Top Up",
-      description: "Wallet top-up",
-    },
-    {
-      id: 2,
-      date: "2023-10-02",
-      amount: "EGP 200",
-      status: "Failed",
-      type: "Withdrawal",
-      description: "Withdrawal request",
-    },
-    {
-      id: 3,
-      date: "2023-10-03",
-      amount: "EGP 100",
-      status: "Refunded",
-      type: "Installment",
-      description: "Monthly installment",
-    },
-    // Add more transactions as needed
-  ];
+  const dispatch = useDispatch();
+  const { data: investments, loading: investmentsLoading } = useSelector((state) => state.investments);
+  const { user, loading: profileLoading } = useSelector((state) => state.profile);
 
-  // State for filters
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
+  useEffect(() => {
+    dispatch(fetchInvestments());
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
 
-  // Filtered transactions
-  const filteredTransactions = transactions.filter((transaction) => {
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'EGP',
+      minimumFractionDigits: 2
+    }).format(value);
+  };
+
+  if (investmentsLoading || profileLoading) {
     return (
-      (statusFilter === "all" || transaction.status === statusFilter) &&
-      (typeFilter === "all" || transaction.type === typeFilter)
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <div className="text-center max-w-md p-8">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[rgb(0,48,85)] mx-auto mb-6"></div>
+          <h3 className="text-xl font-semibold text-gray-800">Loading Your Financial Data</h3>
+          <p className="text-gray-500 mt-2">We're gathering your investments and account information...</p>
+          
+          {/* Skeleton Loaders */}
+          <div className="mt-8 space-y-4">
+            <div className="bg-gray-100 rounded-lg h-4 w-full animate-pulse"></div>
+            <div className="bg-gray-100 rounded-lg h-4 w-3/4 animate-pulse"></div>
+            <div className="bg-gray-100 rounded-lg h-4 w-5/6 animate-pulse"></div>
+          </div>
+        </div>
+      </div>
     );
-  });
+  }
 
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Investments Column */}
         <div className="lg:col-span-2 col-span-1 bg-white p-6 rounded-2xl shadow-md">
-          <p className="mt-6 text-xl font-semibold">Recent Transactions</p>
+          <p className="text-xl font-semibold">My Investments</p>
 
-          {/* Filters */}
-          <div className="mt-4 flex gap-4 ">
-            <div className="flex flex-col gap-2 w-1/3">
-              <p className="text-lg font-semibold mt-4 mb-2">Statuses</p>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="p-2 border border-gray-300 rounded-lg"
-              >
-                <option value="all">All</option>
-                <option value="Succeeded">Succeeded</option>
-                <option value="Failed">Failed</option>
-                <option value="Refunded">Refunded</option>
-              </select>
-            </div>
-            <div className="flex flex-col gap-2 w-1/3">
-              <p className="text-lg font-semibold mt-4 mb-2">Types</p>
-
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className="p-2 border border-gray-300 rounded-lg"
-              >
-                <option value="all">All </option>
-                <option value="Top Up">Top Up</option>
-                <option value="Withdrawal">Withdrawal</option>
-                <option value="Installment">Installment</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Transactions Table */}
-          <div className="mt-10 overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="">
-                  <th className="px-3 py-5 text-left">Date</th>
-                  <th className="px-3 py-5 text-left">Amount</th>
-                  <th className="px-3 py-5 text-left">Status</th>
-                  <th className="px-3 py-5 text-left">Type</th>
-                  <th className="px-3 py-5 text-left">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredTransactions.map((transaction) => (
-                  <tr key={transaction.id} className="border-b">
-                    <td className="px-3 py-5">{transaction.date}</td>
-                    <td className="px-3 py-5">{transaction.amount}</td>
-                    <td className="px-3 py-5">
-                      <span
-                        className={`px-2 py-1 rounded-full text-sm ${
-                          transaction.status === "Succeeded"
-                            ? "bg-green-100 text-green-800"
-                            : transaction.status === "Failed"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-blue-100 text-blue-800"
-                        }`}
-                      >
-                        {transaction.status}
-                      </span>
-                    </td>
-                    <td className="px-3 py-5">{transaction.type}</td>
-                    <td className="px-3 py-5">{transaction.description}</td>
+          {/* Investments Table */}
+          <div className="mt-6 overflow-x-auto">
+            {investments && investments.length > 0 ? (
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    <th className="px-3 py-3 text-left">Property</th>
+                    <th className="px-3 py-3 text-left">Purchase Date</th>
+                    <th className="px-3 py-3 text-left">Shares</th>
+                    <th className="px-3 py-3 text-left">Total Amount</th>
+                    <th className="px-3 py-3 text-left">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {investments.map((investment) => (
+                    <tr key={investment.id} className="border-b hover:bg-gray-50 transition-colors">
+                      <td className="px-3 py-4">{investment.property.title}</td>
+                      <td className="px-3 py-4">
+                        {format(new Date(investment.purchase_date), 'MMM dd, yyyy')}
+                      </td>
+                      <td className="px-3 py-4">{investment.number_of_shares}</td>
+                      <td className="px-3 py-4">{formatCurrency(investment.total_amount)}</td>
+                      <td className="px-3 py-4">
+                        <span className={`px-2 py-1 rounded-full text-sm ${
+                          investment.status === "active" 
+                            ? "bg-green-100 text-green-800" 
+                            : "bg-gray-100 text-gray-800"
+                        }`}>
+                          {investment.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="text-center py-8">
+                <Image
+                  src="https://shares.nawy.com/_next/static/media/building-07.b3b45ba9.svg"
+                  alt="No investments"
+                  width={120}
+                  height={120}
+                  className="mx-auto opacity-70"
+                />
+                <p className="text-lg text-gray-600 mt-4">No investments found</p>
+                <p className="text-gray-400 mt-2">Start investing to see your portfolio here</p>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Right Column */}
         <div className="col-span-1 mt-6 lg:mt-0">
-          <div className="bg-[rgb(0,48,85)] text-white p-4 rounded-2xl mb-12">
-            <h1 className="font-semibold">My Balance</h1>
-            <p className="mt-6 text-2xl ">EGP 0</p>
-
-            <div className="flex gap-4 justify-between">
-              <button className="bg-white text-[rgb(0,48,85)] px-14 py-2 rounded-lg mt-4 font-semibold opacity-60 hover:opacity-100 transition-opacity duration-200">
-                Pay Now
+          {/* Balance Card */}
+          <div className="bg-[rgb(0,48,85)] text-white p-6 rounded-2xl mb-6">
+            <h1 className="font-semibold text-xl">My Balance</h1>
+            <p className="mt-4 text-3xl">
+              {user?.balance ? formatCurrency(user.balance) : '--'}
+            </p>
+            <div className="flex gap-4 justify-between mt-6">
+              <button className="bg-white text-[rgb(0,48,85)] px-4 py-2 rounded-lg font-semibold w-full hover:opacity-90 transition-opacity">
+                Deposit
               </button>
-              <button className="bg-white text-[rgb(0,48,85)] px-14 py-2 rounded-lg mt-4 font-semibold opacity-60 hover:opacity-100 transition-opacity duration-200">
-                Pay Now
+              <button className="bg-white text-[rgb(0,48,85)] px-4 py-2 rounded-lg font-semibold w-full hover:opacity-90 transition-opacity">
+                Withdraw
               </button>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-2xl ">
-            <p className="mt-6 text-2xl font-semibold">My Cards</p>
-            <div className="mt-6 flex justify-center">
-              <Image
-                src="https://shares.nawy.com/_next/static/media/credit-card-xl.570edfb4.svg"
-                alt="Property"
-                width={88}
-                height={88}
-              />
-            </div>
-
-            <p className="mt-4 text-center font-medium text-lg">
-              You don’t have any saved payment methods
-            </p>
-            <div className="flex justify-end mt-4">
-              <button className="bg-[rgb(0,48,85)] text-white px-12 py-3 rounded-lg mt-4 text-lg font-semibold hover:bg-[rgba(0,37,75,0.7)] transition-colors duration-200">
-                Browse Properties
-              </button>
-            </div>
+          
+          {/* Summary Card */}
+          <div className="bg-white p-6 rounded-2xl shadow-md">
+            <p className="text-xl font-semibold">Investment Summary</p>
+            {investments && investments.length > 0 ? (
+              <div className="mt-4">
+                <div className="flex justify-between py-3 border-b">
+                  <span className="text-gray-600">Total Investments:</span>
+                  <span className="font-semibold">
+                    {formatCurrency(investments.reduce((sum, inv) => sum + parseFloat(inv.total_amount), 0))}
+                  </span>
+                </div>
+                <div className="flex justify-between py-3 border-b">
+                  <span className="text-gray-600">Properties Owned:</span>
+                  <span className="font-semibold">
+                    {new Set(investments.map(inv => inv.property_id)).size}
+                  </span>
+                </div>
+                <div className="flex justify-between py-3">
+                  <span className="text-gray-600">Total Shares:</span>
+                  <span className="font-semibold">
+                    {investments.reduce((sum, inv) => sum + inv.number_of_shares, 0)}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-6 text-center">
+                <Image
+                  src="https://shares.nawy.com/_next/static/media/building-07.b3b45ba9.svg"
+                  alt="No investments"
+                  width={80}
+                  height={80}
+                  className="mx-auto opacity-50"
+                />
+                <p className="mt-4 text-gray-500">No investments yet</p>
+              </div>
+            )}
           </div>
-          <div
-            className="p-6 rounded-lg text-white mt-6"
-            style={{
-              background:
-                "linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 100%), linear-gradient(139deg, rgb(15, 48, 81) -40.11%, rgb(66, 73, 216) -0.45%, rgb(159, 91, 195) 118.69%",
-            }}
-          >
-            <h3 className="text-2xl font-semibold">Facing any issues?</h3>
-            <p className="mt-4 text-lg font-medium">
-              We are always here to support
-            </p>
-            <button className="bg-white px-10 py-3 rounded-lg mt-4  font-semibold text-[rgb(0,144,122)]">
-              <HiChatBubbleLeftRight
-                color="rgb(0,144,122)"
-                className="inline text-2xl"
-              />{" "}
-              Start with live chat
+
+          {/* Help Card */}
+          <div className="p-6 rounded-lg text-white mt-6 bg-gradient-to-r from-blue-900 to-purple-700">
+            <h3 className="text-xl font-semibold">Need help?</h3>
+            <p className="mt-2 opacity-90">Our team is here to support you</p>
+            <button className="bg-white px-4 py-2 rounded-lg mt-4 font-semibold text-[rgb(0,144,122)] flex items-center gap-2 hover:bg-opacity-90 transition-all">
+              <HiChatBubbleLeftRight className="text-xl" />
+              Live Chat
             </button>
           </div>
         </div>
