@@ -53,7 +53,7 @@ export default function SigninValidation() {
             {
               headers: {
                 "Content-Type": "application/json",
-                apiKey: process.env.NEXT_API_KEY, // your custom header
+                apiKey: "1234", // your custom header
               },
             }
           );
