@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_BASE_URL = "https://realestate.learnock.com";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // THUNK
 export const fetchApartmentDetails = createAsyncThunk(

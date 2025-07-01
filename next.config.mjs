@@ -17,7 +17,8 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname:"realestate.learnock.com"
+        hostname:"realestate.learnock.com",
+        pathname: '/**',
       }
     ],
   },
