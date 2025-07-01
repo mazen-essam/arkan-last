@@ -9,7 +9,7 @@ const AOS = dynamic(
   () => import("aos").then((mod) => mod),
   { ssr: false }
 );
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 // Action imports
 import {
   setSearchQuery,
@@ -290,24 +290,32 @@ function RentPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-8">
             {sortedList.length > 0 ? (
-              sortedList.map((item) => (
-                <RentCardList
-                  key={item.id}
-                  property={{
-                    ...item,
-                    bedrooms: item.beds,
-                    furnished: item.is_furnished,
-                    type: item.features,
-                    paymentPlan: item.lease_start ? "Leased" : "Available",
-                    // amenities: item.amenities ? item.amenities.split(",") : [],
-                  }}
-                />
-              ))
-            ) : (
-              <p className="text-center py-8 text-gray-500">
-                No properties match your filters
-              </p>
-            )}
+  sortedList.map((item) => {
+    const firstImage = 
+      item.images && item.images.length > 0 
+        ? `${API_URL}/storage${item.images[0].image_path}`
+        : "/placeholder.jpg"; // fallback image
+
+    return (
+      <RentCardList
+        key={item.id}
+        property={{
+          ...item,
+          bedrooms: item.beds,
+          furnished: item.is_furnished,
+          type: item.features,
+          paymentPlan: item.lease_start ? "Leased" : "Available",
+          imageUrl: firstImage, // Add the image URL here
+          // amenities: item.amenities ? item.amenities.split(",") : [],
+        }}
+      />
+    );
+  })
+) : (
+  <p className="text-center py-8 text-gray-500">
+    No properties match your filters
+  </p>
+)}
           </div>
         </main>
       </div>

@@ -62,7 +62,7 @@ export default function SigninValidation() {
 
           if (result.status === true) {
             localStorage.setItem("userToken", result.data);
-            router.push("/site/home");
+          window.location.href = "/site/home";
           } else {
             setErrors({ general: result.message });
           }

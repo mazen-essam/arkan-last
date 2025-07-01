@@ -1,72 +1,97 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import ChooseCountry from "./ChooseCountry";
+import { useState } from "react";
+import EmailSignupForm from "./emailSignupForm";
 
 export default function Register() {
+  const [showEmailForm, setShowEmailForm] = useState(false);
+
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center py-12 pt-32 relative">
-      {/* Background Image with Blur */}
-      <div className="absolute inset-0 bg-[url('/background3.jpg')] bg-cover bg-center before:absolute before:inset-0 before:bg-black before:bg-opacity-50 before:backdrop-blur-md"></div>
+    <section className="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative bg-gradient-to-br from-purple-400 to-indigo-800">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-[url('/pattern.svg')] bg-repeat"></div>
+      </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Navbar */}
+      <div className="w-full max-w-4xl mx-auto relative z-10">
+        
        
+        {/* Main Content */}
+        <main className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="md:flex">
+            {/* Left Side - Illustration */}
+            <div className="hidden md:block md:w-1/2 bg-gradient-to-br from-blue-800 to-violet-900 p-12 flex items-center justify-center">
+              <div className="text-center text-white">
+                <img
+                  src="/3293465.jpg"
+                  alt="Sign Up Illustration"
+                  width={300}
+                  height={300}
+                  className="mx-auto"
+                />
+                <h3 className="text-2xl font-bold mt-6">Welcome to Arkan</h3>
+                <p className="mt-2 opacity-90">
+                  Join thousands of users managing their properties with ease
+                </p>
+              </div>
+            </div>
 
-        {/* Card Container */}
-        <div className="max-w-3xl mx-auto bg-gray-300 rounded-2xl shadow-2xl p-8 text-center">
-        <nav className="flex justify-between items-center mb-8 px-8">
-          <Image src="/arkan-logo.png" alt="Logo" width={100} height={100} />
-          <div className="relative">
-            <ChooseCountry />
+            {/* Right Side - Form */}
+            <div className="w-full md:w-1/2 p-8 sm:p-10">
+              {showEmailForm ? (
+                <EmailSignupForm onBack={() => setShowEmailForm(false)} />
+              ) : (
+                <div className="text-center">
+                  <h2 className="text-3xl font-extrabold text-gray-900">
+                    Get Started
+                  </h2>
+                  <p className="mt-2 text-gray-600">
+                    Create your account in just a few steps
+                  </p>
+
+                  <div className="mt-8">
+                    <button 
+                      onClick={() => setShowEmailForm(true)}
+                      className="w-full max-w-xs mx-auto bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300 transition duration-200 flex items-center justify-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      Sign up with Email
+                    </button>
+                  </div>
+
+                  <div className="mt-6">
+                    <p className="text-sm text-gray-500">
+                      Already have an account?{' '}
+                      <Link href="/auth/signin">
+                        <span className="text-purple-600 hover:text-purple-700 font-medium cursor-pointer">
+                          Sign in
+                        </span>
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </nav>
-          {/* Heading */}
-          <h2 className="font-bold text-3xl text-gray-800">Create Aqar Tech Account</h2>
-          <p className="text-gray-500 mt-4 text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </main>
+
+        {/* Footer */}
+        <footer className="mt-8 text-center text-sm text-gray-500">
+          <p className="text-white">
+            By proceeding, you agree to our{' '}
+            <Link href="/terms" className="text-rose-200 hover:text-rose-500 duration-200">
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link href="/privacy" className="text-rose-200 hover:text-rose-500 duration-200">
+              Privacy Policy
+            </Link>.
           </p>
-
-          {/* Sign-Up Options */}
-          <div className="mt-6 space-y-4">
-            <Link href="/auth/signup">
-              <button className="w-full bg-gray-300 hover:bg-gray-400 text-black font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 flex items-center justify-center">
-                <i className="fas fa-envelope text-lg mr-2"></i> Sign up with Email
-              </button>
-            </Link>
-
-            <button className="w-full bg-gray-300 hover:bg-gray-400 text-black font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 flex items-center justify-center">
-              <i className="fab fa-google text-lg mr-2"></i> Sign up with Google
-            </button>
-
-            <button className="w-full bg-gray-300 hover:bg-gray-400 text-black font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 flex items-center justify-center">
-              <i className="fab fa-facebook text-lg mr-2 text-blue-600"></i> Sign up with Facebook
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="flex items-center justify-center my-6">
-            <div className="h-px w-1/4 bg-gray-400"></div>
-            <span className="mx-4 text-gray-500 text-sm">or</span>
-            <div className="h-px w-1/4 bg-gray-400"></div>
-          </div>
-
-          {/* Login Link */}
-          <p className="mt-5 font-semibold">
-            Already have an Aqar account?{' '}
-            <Link href="/auth/signin">
-              <button className="text-purple-600 hover:text-purple-700">Log in</button>
-            </Link>
-          </p>
-        </div>
-
-        {/* Terms and Conditions */}
-        <div className="text-center mt-6 text-sm text-gray-500">
-          <p>
-            By proceeding, you agree to the{' '}
-            <span className="text-purple-600 hover:text-purple-700 cursor-pointer">terms and conditions</span> and{' '}
-            <span className="text-purple-600 hover:text-purple-700 cursor-pointer">privacy policy</span>.
-          </p>
-        </div>
+        </footer>
       </div>
     </section>
   );

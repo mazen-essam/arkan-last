@@ -7,6 +7,7 @@ import apartmentDetailsReducer from "./apartmentDetailsSlice";
 import propertyDetailsReducer from "./propertyDetailsSlice"; // Add the new import
 import profileReducer from "./profileSlice"; // Import the profile slice
 import investmentReducer from "./investmentsSlice"; // Import the investments slice
+import authReducer from "./authSlice";
 
 const makeStore = () =>
   configureStore({
@@ -17,6 +18,7 @@ const makeStore = () =>
       propertyDetails: propertyDetailsReducer, // Add the new reducer
       profile: profileReducer,
     investments: investmentReducer,
+    auth: authReducer,
     },
   });
 

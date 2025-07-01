@@ -19,13 +19,13 @@ export default function Signin() {
           {/* Heading */}
           <div className="text-center">
             <h1 className="font-bold text-3xl text-gray-800">Sign In</h1>
-            <p className="text-gray-500 mt-2 text-sm">
+            <p className="text-gray-500 mt-2 mb-6 text-sm">
               Welcome! Please fill the details to get started.
             </p>
           </div>
 
           {/* Social Sign-In Buttons */}
-          <div className="mt-6 space-y-4">
+          {/* <div className="mt-6 space-y-4">
             <button className="w-full bg-transparent text-gray-700 border border-gray-300 hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 flex items-center justify-center">
               <i className="fab fa-google text-lg mr-2"></i> Sign in with Google
             </button>
@@ -34,14 +34,14 @@ export default function Signin() {
               <i className="fab fa-facebook text-blue-600 text-lg mr-2 group-hover:text-white"></i>{" "}
               Sign in with Facebook
             </button>
-          </div>
+          </div> */}
 
           {/* Divider */}
-          <div className="flex items-center justify-center my-6">
+          {/* <div className="flex items-center justify-center my-6">
             <div className="h-px w-1/4 bg-gray-300"></div>
             <span className="mx-4 text-gray-500 text-sm">or</span>
             <div className="h-px w-1/4 bg-gray-300"></div>
-          </div>
+          </div> */}
 
           {/* Sign-In Form */}
           <SigninValidation />

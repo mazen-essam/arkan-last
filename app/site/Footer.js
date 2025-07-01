@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Short Description Section */}
           <div className="w-full md:w-1/2">
             <div className="mb-6">
-              <Image src="/arkan-logo.png" alt="Logo" width={170} height={170} />
+              <img src="/arkan-logo.PNG" alt="Logo" width={170} height={170} />
             </div>
             <div>
               <h2 className="text-2xl font-bold mb-4">Arkan</h2>

@@ -1,84 +1,161 @@
 "use client";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import Image from "next/image";
 import Link from "next/link";
 import FavouriteButton from "../home/FavouriteButton";
+import {
+  FaBed,
+  FaBuilding,
+  FaCouch,
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaStar,
+} from "react-icons/fa";
+import { IoIosArrowForward } from "react-icons/io";
+import { useMemo } from "react";
 
 export default function RentCardList({ property }) {
-    return (
-        <Link href={`/site/ApartmentDetails/${property.id}`}>
-            <div className="bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-shadow hover:scale-[1.02] duration-500 border-2 border-gray-300 flex flex-col md:flex-row items-start p-5 gap-6">
-                {/* Property Image */}
-                <div className="relative w-full md:w-1/3 h-60 rounded-lg overflow-hidden">
-                    <Image
-                        src="/background3.jpg"
-                        alt={property.title}
-                        layout="fill"
-                        objectFit="cover"
-                        className="h-full w-full"
-                    />
-                    <FavouriteButton property={property} />
-                </div>
+  // 🧠 Parse and extract amenities safely
+  const amenitiesArr = useMemo(() => {
+    if (!property?.amenities) return [];
 
-                {/* Property Details */}
-                <div className="flex flex-col justify-between w-full md:w-2/3">
-                    {/* Location */}
-                    <p className="text-gray-600">
-                        <i className="fa-solid fa-location-dot"></i> {property.location || "Downtown, Cairo"}
-                    </p>
+    try {
+      const parsed =
+        typeof property.amenities === "string"
+          ? JSON.parse(property.amenities)
+          : property.amenities;
 
-                    {/* Title and Price */}
-                    <div className="flex justify-between items-start mt-2">
-                        <h3 className="text-lg font-semibold text-gray-900">{property.title}</h3>
-                        <p className="text-blue-600 font-bold">{`${property.price} EGP`}</p>
-                    </div>
+      if (Array.isArray(parsed)) return parsed;
+      if (typeof parsed === "object") return Object.values(parsed);
 
-                    {/* Rating */}
-                    <div className="flex items-center mt-2">
-                        <div className="flex text-yellow-400">
-                            {[...Array(5)].map((_, i) => (
-                                <i
-                                    key={i}
-                                    className={`fa-solid fa-star ${i < property.rating ? "text-yellow-400" : "text-gray-300"}`}
-                                ></i>
-                            ))}
-                        </div>
-                        <span className="text-gray-600 ml-2">({property.reviews || 12} reviews)</span>
-                    </div>
+      return [];
+    } catch (err) {
+      console.error("Invalid amenities JSON:", err);
+      return [];
+    }
+  }, [property?.amenities]);
 
-                    {/* Property Features */}
-                    <div className="flex flex-wrap gap-4 text-gray-600 mt-2">
-                        <p><i className="fa fa-bed"></i> {property.bedrooms} {property.bedrooms > 1 ? "Bedrooms" : "Bedroom"}</p>
-                        <p><i className="fa-solid fa-building"></i> {property.type}</p>
-                        <p><i className="fa-solid fa-couch"></i> {property.furnished ? "Furnished" : "Unfurnished"}</p>
-                        <p><i className="fa-solid fa-calendar"></i> {property.paymentPlan}</p>
-                    </div>
-
-                    {/* Amenities */}
-                    <div className="flex flex-wrap gap-2 mt-4">
-                        {property.amenities?.map((amenity, index) => (
-                            <span key={index} className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">
-                                {amenity}
-                            </span>
-                        ))}
-                    </div>
-
-                    {/* Description and Call to Action */}
-                    <div className="flex flex-col md:flex-row justify-between items-start mt-4 items-center">
-                        {/* Description */}
-                        <p className="text-gray-600 pr-10 w-3/4">
-                            {property.description || "A modern and spacious property located in a prime area, perfect for families and professionals."}
-                        </p>
-
-                        {/* Call to Action */}
-                        <div className="mt-4 md:mt-0 w-46">
-                            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300">
-                                Contact Seller
-                            </button>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <div className="group bg-white rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-blue-200">
+      <Link href={`/site/ApartmentDetails/${property.id}`} className="block">
+        <div className="flex flex-col md:flex-row h-full">
+          {/* Property Image */}
+          <div className="relative w-full md:w-2/5 h-64 md:h-auto">
+            <Image
+              src={property.imageUrl || "/placeholder-property.jpg"}
+              alt={property.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority={false}
+            />
+            <div className="absolute top-4 right-4">
+              <FavouriteButton property={property} />
             </div>
-        </Link>
-    );
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <p className="text-white font-medium text-lg">
+                {`${property.price?.toLocaleString() || "0"} EGP`}
+              </p>
+            </div>
+          </div>
+
+          {/* Property Details */}
+          <div className="w-full md:w-3/5 p-6 flex flex-col">
+            {/* Location */}
+            <div className="flex items-center text-blue-600 mb-2">
+              <FaMapMarkerAlt className="mr-2" />
+              <span className="text-sm font-medium">
+                {property.location || "Downtown, Cairo"}
+              </span>
+            </div>
+
+            {/* Title */}
+            <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
+              {property.title}
+            </h3>
+
+            {/* Rating */}
+            <div className="flex items-center mb-4">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar
+                    key={i}
+                    className={`text-sm ${
+                      i < (property.rating || 4)
+                        ? "text-yellow-400"
+                        : "text-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-gray-500 text-sm ml-2">
+                ({property.reviews || 12} reviews)
+              </span>
+            </div>
+
+            {/* Property Features */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="flex items-center text-gray-600">
+                <FaBed className="mr-2 text-blue-500" />
+                <span>
+                  {property.bedrooms || 0}{" "}
+                  {property.bedrooms === 1 ? "Bedroom" : "Bedrooms"}
+                </span>
+              </div>
+              <div className="flex items-center text-gray-600">
+                <FaBuilding className="mr-2 text-blue-500" />
+                <span>{property.type || "Apartment"}</span>
+              </div>
+              <div className="flex items-center text-gray-600">
+                <FaCouch className="mr-2 text-blue-500" />
+                <span>{property.furnished ? "Furnished" : "Unfurnished"}</span>
+              </div>
+              <div className="flex items-center text-gray-600">
+                <FaCalendarAlt className="mr-2 text-blue-500" />
+                <span>{property.paymentPlan || "Available"}</span>
+              </div>
+            </div>
+
+            {/* Amenities */}
+            {amenitiesArr.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                {amenitiesArr.slice(0, 4).map((item, i) => (
+                  <span
+                    key={i}
+                    className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-medium"
+                  >
+                    {item}
+                  </span>
+                ))}
+                {amenitiesArr.length > 4 && (
+                  <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-medium">
+                    +{amenitiesArr.length - 4} more
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Description */}
+            <p className="text-gray-600 mb-6 line-clamp-2">
+              {property.description ||
+                "A modern and spacious property located in a prime area, perfect for families and professionals."}
+            </p>
+
+            {/* Footer with CTA */}
+            <div className="mt-auto flex justify-between items-center">
+              <button className="text-blue-600 hover:text-blue-800 font-medium flex items-center transition-colors">
+                View details <IoIosArrowForward className="ml-1" />
+              </button>
+              <a
+                href={`/site/ApartmentDetails/${property.id}`}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Details
+              </a>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
 }
