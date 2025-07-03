@@ -317,7 +317,7 @@ console.log(resData)
           Invest Now <FaArrowRight />
         </motion.button>
       ) : (
-        <Link href="/login" className="block w-full">
+        <Link href="/auth/signin" className="block w-full">
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
