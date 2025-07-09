@@ -21,8 +21,9 @@ function Page() {
     <section className="bg-gray-50">
       <div className="pt-32 container mx-auto pb-12">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-semibold text-[rgb(0,48,85)]">Wallet</h1>
-          <p className="mt-4 text-2xl font-semibold text-[rgb(0,48,85)]">
+          {/* Updated to blue text */}
+          <h1 className="text-5xl font-semibold text-blue-700">Wallet</h1>
+          <p className="mt-4 text-2xl font-semibold text-blue-700">
             Track your payments and manage your investments
           </p>
         </div>
@@ -33,8 +34,8 @@ function Page() {
             onClick={() => setActiveTab("payment")}
             className={`px-6 py-2 text-lg font-semibold ${
               activeTab === "payment"
-                ? "bg-[rgb(0,48,85)] text-white"
-                : "bg-gray-200 text-[rgb(0,48,85)]"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-blue-700"
             } rounded-l-lg transition-colors duration-300`}
           >
             Payment
@@ -43,8 +44,8 @@ function Page() {
             onClick={() => setActiveTab("moneyManagement")}
             className={`px-6 py-2 text-lg font-semibold ${
               activeTab === "moneyManagement"
-                ? "bg-[rgb(0,48,85)] text-white"
-                : "bg-gray-200 text-[rgb(0,48,85)]"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-blue-700"
             } rounded-r-lg transition-colors duration-300`}
           >
             Investments

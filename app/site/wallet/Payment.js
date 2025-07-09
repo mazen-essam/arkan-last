@@ -20,7 +20,7 @@ function Payment() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-[rgb(0,48,85)] text-white p-6 rounded-lg">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-6 rounded-lg">
         <h1 className="text-xl font-semibold">Investment Overview</h1>
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
@@ -70,16 +70,16 @@ function Payment() {
           />
           <h3 className="text-xl font-semibold mt-4">No active investments</h3>
           <p className="mt-2">Start your investment journey today</p>
-          <button className="bg-[rgb(0,48,85)] text-white px-6 py-2 rounded-lg mt-4 font-medium">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg mt-4 font-medium transition-colors">
             Browse Properties
           </button>
         </div>
       )}
 
-      <div className="p-6 rounded-lg text-white bg-gradient-to-r from-blue-900 to-purple-700">
+      <div className="p-6 rounded-lg text-white   bg-blue-600">
         <h3 className="text-xl font-semibold">Payment Questions?</h3>
         <p className="mt-2">Our support team is available 24/7</p>
-        <button className="bg-white px-4 py-2 rounded-lg mt-4 font-semibold text-[rgb(0,144,122)] flex items-center gap-2">
+        <button className="bg-white px-4 py-2 rounded-lg mt-4 font-semibold text-blue-600 flex items-center gap-2 hover:bg-opacity-90 transition-all">
           <HiChatBubbleLeftRight className="text-xl" />
           Contact Support
         </button>

@@ -105,17 +105,17 @@ function MoneyManagement() {
 
         {/* Right Column */}
         <div className="col-span-1 mt-6 lg:mt-0">
-          {/* Balance Card */}
-          <div className="bg-[rgb(0,48,85)] text-white p-6 rounded-2xl mb-6">
+          {/* Updated Balance Card to blue gradient */}
+          <div className="bg-gradient-to-br from-blue-600 to-blue-800 text-white p-6 rounded-2xl mb-6">
             <h1 className="font-semibold text-xl">My Balance</h1>
             <p className="mt-4 text-3xl">
               {user?.balance ? formatCurrency(user.balance) : '--'}
             </p>
             <div className="flex gap-4 justify-between mt-6">
-              <button className="bg-white text-[rgb(0,48,85)] px-4 py-2 rounded-lg font-semibold w-full hover:opacity-90 transition-opacity">
+              <button className="bg-yellow-400 hover:bg-yellow-500 text-blue-800 px-4 py-2 rounded-lg font-semibold w-full transition-colors">
                 Deposit
               </button>
-              <button className="bg-white text-[rgb(0,48,85)] px-4 py-2 rounded-lg font-semibold w-full hover:opacity-90 transition-opacity">
+              <button className="bg-white hover:bg-gray-100 text-blue-700 px-4 py-2 rounded-lg font-semibold w-full transition-colors">
                 Withdraw
               </button>
             </div>
@@ -160,10 +160,10 @@ function MoneyManagement() {
           </div>
 
           {/* Help Card */}
-          <div className="p-6 rounded-lg text-white mt-6 bg-gradient-to-r from-blue-900 to-purple-700">
+           <div className="p-6 rounded-lg text-white mt-6  bg-blue-600">
             <h3 className="text-xl font-semibold">Need help?</h3>
             <p className="mt-2 opacity-90">Our team is here to support you</p>
-            <button className="bg-white px-4 py-2 rounded-lg mt-4 font-semibold text-[rgb(0,144,122)] flex items-center gap-2 hover:bg-opacity-90 transition-all">
+            <button className="bg-white px-4 py-2 rounded-lg mt-4 font-semibold text-blue-600 flex items-center gap-2 hover:bg-opacity-90 transition-all">
               <HiChatBubbleLeftRight className="text-xl" />
               Live Chat
             </button>
