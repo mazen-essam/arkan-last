@@ -99,9 +99,9 @@ export default function Navbar() {
               whileTap={{ scale: 0.95 }}
             >
               <img
-                src="/arkan-logo.PNG"
+                src="/images.jpg"
                 alt="Logo"
-                width={90}
+                width={60}
                 className="mr-8"
                 priority
               />
