@@ -46,9 +46,9 @@ import React from 'react';
     <span>{location}</span>
   )}
 </p>
-<p className="text-sm text-gray-500">
+{/* <p className="text-sm text-gray-500">
   {location}
-</p>
+</p> */}
 
 
         {/* Rating and Reviews */}
